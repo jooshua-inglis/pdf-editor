@@ -3,5 +3,7 @@ module.exports = {
     "gatsby-plugin-sass",
     "gatsby-plugin-react-helmet",
     "gatsby-plugin-offline",
+    'gatsby-plugin-postcss'
   ],
+
 };
