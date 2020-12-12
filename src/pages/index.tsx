@@ -6,7 +6,6 @@ import { PDFDocument } from 'pdf-lib'
 import { AddFile } from '../components/addFiles'
 import { Spinner } from '../components/spinner'
 
-const fileReader = new FileReader()
 GlobalWorkerOptions.workerSrc =
   'https://npmcdn.com/pdfjs-dist@2.5.207/build/pdf.worker.js'
 
@@ -47,6 +46,7 @@ function dragOverHandler(ev) {
 }
 
 async function getByteArray(file): Promise<Uint8Array> {
+  const fileReader = new FileReader()
   return new Promise(function (resolve, reject) {
     fileReader.onload = function (ev) {
       const array = new Uint8Array(ev.target.result as ArrayBuffer | undefined)
