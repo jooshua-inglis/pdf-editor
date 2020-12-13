@@ -10,6 +10,7 @@ module.exports = {
                 name: 'pdf-shuffler-online',
                 start_url: '/',
                 icon: 'static/favicon.png',
+                crossOrigin: `use-credentials`,
             },
         },
     ],
