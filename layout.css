@@ -11,3 +11,11 @@
     border-color: red;
     border-style: solid;
 }
+
+.stroke-white {
+    fill: white;
+}
+
+.center-block {
+    margin: 0 auto;
+}
