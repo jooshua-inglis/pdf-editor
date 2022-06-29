@@ -25,7 +25,6 @@
     "gatsby-plugin-postcss": "^3.3.0",
     "gatsby-plugin-react-helmet": "^3.6.0",
     "gatsby-plugin-ts-config": "^1.1.5",
-    "install": "^0.13.0",
     "node-sass": "^v7.0.1 ",
     "pdf-lib": "^1.13.0",
     "pdfjs-dist": "2.5.207",
