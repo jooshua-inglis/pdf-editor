@@ -1,33 +1,41 @@
 import { PDFPage } from 'pdf-lib'
 import { PDFPageProxy } from 'pdfjs-dist'
 import React, { useEffect, useRef } from 'react'
-import { DragSourceMonitor, useDrag, useDrop } from 'react-dnd'
-import { SvgBin } from './svg/bin'
+import SvgBin from './svg/bin'
+import { UniqueIdentifier, useDraggable, useDroppable } from '@dnd-kit/core'
+import { CSS } from '@dnd-kit/utilities'
+import { RenderTask } from 'pdfjs-dist/types/src/display/api'
+import { useSortable } from '@dnd-kit/sortable'
 
 export interface PageData {
+    id: string
     number: number
-    title: string
+    docTitle: string
     pageRenderer: PDFPageProxy
     page: PDFPage
 }
 
 interface PageProps {
     pageData: PageData
-    movePageTo: (from: number, to: number) => void
     position: number
+    className: string
     deletePage: () => void
 }
 
-interface DropResult {
-    position: number
-}
-
-export const Page = ({ pageData, movePageTo, position, deletePage }: PageProps) => {
+export default function Page({ pageData, position, deletePage, className }: PageProps) {
+    const canvasRef = useRef<HTMLCanvasElement>(null)
+    const renderTask = useRef<RenderTask>()
     useEffect(() => {
         const viewport = pageData.pageRenderer.getViewport({ scale: 0.6 })
 
         const canvas = canvasRef.current
+        if (!canvas) {
+            return
+        }
         const context = canvas.getContext('2d')
+        if (!context) {
+            return
+        }
         canvas.height
         //Our first draw
         canvas.height = viewport.height
@@ -38,55 +46,49 @@ export const Page = ({ pageData, movePageTo, position, deletePage }: PageProps) 
             canvasContext: context,
             viewport: viewport,
         }
-        var renderTask = pageData.pageRenderer.render(renderContext)
-        renderTask.promise.then(function () {})
-    }, [])
 
-    const canvasRef = useRef(null)
+        renderTask.current?.cancel()
+        renderTask.current = pageData.pageRenderer.render(renderContext)
+        renderTask.current.promise
+            .then(() => {
+                renderTask.current = undefined
+            })
+            .catch((e) => {
+                if (e.name === 'RenderingCancelledException') {
+                    return
+                }
+                throw e
+            })
+    }, [pageData.pageRenderer])
 
-    const [{}, drag] = useDrag({
-        end(item, monitor: DragSourceMonitor) {
-            const dropResult: DropResult = monitor.getDropResult()
-            if (dropResult) {
-                movePageTo(item.position, dropResult.position)
-            }
-        },
-        collect: (monitor) => ({
-            isDragging: Boolean(monitor.isDragging()),
-        }),
-        item: { type: 'PAGE', position: position },
+    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+        id: pageData.id,
     })
 
-    const [{ isOver }, drop] = useDrop({
-        accept: 'PAGE',
-        drop: () => ({
-            position: position,
-        }),
-        collect: (monitor) => ({
-            isOver: Boolean(monitor.isOver()),
-        }),
-    })
+    const draggingStyle = {
+        transform: CSS.Translate.toString(transform),
+        transition,
+    }
 
     return (
-        <div className={`text-center center-block`} ref={drop}>
-            <div
-                ref={drag}
-                className={`rounded-lg p-5
-                ${isOver ? 'bg-gradient-to-tr from-green-400 to-blue-500' : ''}`}
-                style={{ maxWidth: 'fit-content' }}>
-                <div className={`a4 relative mx-auto mb-2 shadow-md`}>
-                    <button
-                        onClick={deletePage}
-                        className="absolute right-4 top-4 p-3 rounded-md text-white font-semibold bg-gradient-to-bl from-red-600 to-pink-500">
-                        <SvgBin className="h-5 w-auto stroke-white " />
-                    </button>
-                    <canvas ref={canvasRef} className="h-full w-full  border-2 rounded-lg" />
-                </div>
-
-                <h3 className="text-gray-600">
-                    {pageData.title} - page {pageData.number}
-                </h3>
+        <div
+            className={`rounded-lg p-5 text-center center-block ` + className}
+            style={{ maxWidth: 'fit-content', ...draggingStyle }}
+            ref={setNodeRef}
+            {...listeners}
+            {...attributes}>
+            <div className={`a4 relative mx-auto mb-2 shadow-md`}>
+                <button
+                    onClick={deletePage}
+                    className="absolute right-4 top-4 p-3 rounded-md text-white font-semibold bg-gradient-to-bl from-red-600 to-pink-500">
+                    <SvgBin className="h-5 w-auto stroke-white " />
+                </button>
+                <canvas ref={canvasRef} className="h-full w-full  border-2 rounded-lg" />
             </div>
+
+            <h3 className="text-gray-600">
+                {pageData.docTitle} - page {pageData.number}
+            </h3>
         </div>
     )
 }

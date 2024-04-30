@@ -1,39 +1,34 @@
 {
-  "name": "riffler-online",
-  "version": "1.0.0",
+  "name": "pdf-editor",
+  "version": "0.1.0",
   "private": true,
-  "description": "My Gatsby site",
-  "author": "Joshua Inglis",
-  "keywords": [
-    "gatsby"
-  ],
   "scripts": {
-    "develop": "gatsby develop",
-    "start": "gatsby develop",
-    "build": "gatsby build",
-    "serve": "gatsby serve",
-    "clean": "gatsby clean"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
-  "license": "0BSD",
   "dependencies": {
-    "@types/pdfjs-dist": "^2.1.7",
-    "@types/react-helmet": "^6.1.0",
-    "autoprefixer": "^10.1.0",
-    "gatsby": "^2.26.1",
-    "gatsby-plugin-manifest": "^2.8.0",
-    "gatsby-plugin-offline": "^3.6.0",
-    "gatsby-plugin-postcss": "^3.3.0",
-    "gatsby-plugin-react-helmet": "^3.6.0",
-    "gatsby-plugin-ts-config": "^1.1.5",
-    "node-sass": "^v7.0.1 ",
-    "pdf-lib": "^1.13.0",
-    "pdfjs-dist": "2.5.207",
-    "postcss": "^8.2.1",
-    "react": "^16.13.1",
-    "react-dnd": "^11.1.3",
-    "react-dnd-html5-backend": "^11.1.3",
-    "react-dom": "^16.13.1",
-    "react-helmet": "^6.1.0",
-    "tailwindcss": "^2.0.1"
+    "@dnd-kit/core": "^6.1.0",
+    "@dnd-kit/sortable": "^8.0.0",
+    "@types/uuid": "^9.0.8",
+    "next": "14.2.3",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "3.0.279",
+    "react": "^18",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
+    "react-dom": "^18",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.3",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
   }
 }

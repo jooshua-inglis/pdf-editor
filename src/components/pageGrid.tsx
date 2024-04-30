@@ -1,32 +1,58 @@
 import React from 'react'
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
-import { Page, PageData } from './page'
+import Page, { PageData } from './page'
+import { DndContext, DragEndEvent, MouseSensor, useSensor, useSensors } from '@dnd-kit/core'
+import { SortableContext } from '@dnd-kit/sortable'
 
-export const PageGrid = ({
+const PageGrid = ({
     pages,
     movePageTo,
-    deletePage
+    deletePage,
 }: {
     pages: PageData[]
-    movePageTo: (from: number, to: number) => void,
+    movePageTo: (from: number, to: number) => void
     deletePage: (index: number) => void
 }) => {
+    const handleDragEnd = (event: DragEndEvent) => {
+        const a = event.active.id
+        const o = event.over?.id
+
+
+        const from = pages.findIndex(p => p.id === a)
+        const to = pages.findIndex(p => p.id === o)
+        if(from === -1 || to === -1) {
+            console.error("from or to not found")
+            return
+        }
+        
+        movePageTo(from, to)
+    }
+    const mouseSensor = useSensor(MouseSensor, {
+        // Require the mouse to move by 10 pixels before activating
+        activationConstraint: {
+            distance: 10,
+        },
+    })
+
+    const sensors = useSensors(mouseSensor)
     return (
-        <DndProvider backend={HTML5Backend}>
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8 lg:grid-cols-4">
+        <DndContext onDragEnd={handleDragEnd} sensors={sensors}>
+            <SortableContext items={pages}>
+            <div className="flex flex-wrap justify-evenly">
                 {pages.map((page, index) => {
                     return (
                         <Page
-                            key={page.title + page.number + index}
+                            className="basis-80"
+                            key={page.id}
                             pageData={page}
-                            movePageTo={movePageTo}
                             position={index}
                             deletePage={() => deletePage(index)}
                         />
                     )
                 })}
             </div>
-        </DndProvider>
+      </SortableContext>
+        </DndContext>
     )
 }
+
+export default PageGrid
