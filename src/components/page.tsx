@@ -80,7 +80,7 @@ export default function Page({ pageData, position, deletePage, className }: Page
             <div className={`a4 relative mx-auto mb-2 shadow-md`}>
                 <button
                     onClick={deletePage}
-                    className="absolute right-4 top-4 p-3 rounded-md text-white font-semibold bg-gradient-to-bl from-red-600 to-pink-500">
+                    className="absolute right-4 top-4 p-3 rounded-md text-white font-semibold bg-linear-to-bl from-red-600 to-pink-500">
                     <SvgBin className="h-5 w-auto stroke-white " />
                 </button>
                 <canvas ref={canvasRef} className="h-full w-full  border-2 rounded-lg" />

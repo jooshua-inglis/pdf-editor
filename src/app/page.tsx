@@ -172,13 +172,13 @@ export default function Home() {
             <div className="z-50 fixed flex flex-col-reverse bottom-10 right-10 gap-10">
                 {pages.length !== 0 && (
                     <button
-                        className="rounded-lg text-white font-bold text-xl shadow-xl py-10 px-16 bg-gradient-to-r from-indigo-500 to-blue-500"
+                        className="rounded-lg text-white font-bold text-xl shadow-xl py-10 px-16 bg-linear-to-r from-indigo-500 to-blue-500"
                         onClick={exportDocument}>
                         Export
                     </button>
                 )}
                 <button
-                    className="rounded-lg text-white font-bold text-xl shadow-xl py-10 px-16 bg-gradient-to-r from-red-500 to-orange-500"
+                    className="rounded-lg text-white font-bold text-xl shadow-xl py-10 px-16 bg-linear-to-r from-red-500 to-orange-500"
                     onClick={importDocument}>
                     Import
                 </button>
