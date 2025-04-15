@@ -6,7 +6,7 @@ import { PDFPageProxy, getDocument, GlobalWorkerOptions } from 'pdfjs-dist'
 import { PDFDocument, PDFPage } from 'pdf-lib'
 import AddFile from '@/components/addFiles'
 import * as uuid from 'uuid'
-
+import { Button } from '@/components/ui/button'
 
 // Setting worker path to worker bundle.
 GlobalWorkerOptions.workerSrc = 'https://npmcdn.com/pdfjs-dist@3.0.279/build/pdf.worker.js'
@@ -164,24 +164,19 @@ export default function Home() {
 
     return (
         <div
-            className="p-4"
-            style={{ height: '100vh' }}
+            className="h-[1px] min-h-[100dvh] bg-[linear-gradient(to_right,#80808033_1px,transparent_1px),linear-gradient(to_bottom,#80808033_1px,transparent_1px)] bg-[size:70px_70px] p-4 prose-h4:xl:text-2xl prose-h4:lg:text-xl prose-h4:text-lg"
             id="drop_zone"
             onDrop={onDropHandler}
             onDragOver={(e) => e.preventDefault()}>
             <div className="z-50 fixed flex flex-col-reverse bottom-10 right-10 gap-10">
                 {pages.length !== 0 && (
-                    <button
-                        className="rounded-lg text-white font-bold text-xl shadow-xl py-10 px-16 bg-linear-to-r from-indigo-500 to-blue-500"
-                        onClick={exportDocument}>
+                    <Button size="xl" onClick={exportDocument}>
                         Export
-                    </button>
+                    </Button>
                 )}
-                <button
-                    className="rounded-lg text-white font-bold text-xl shadow-xl py-10 px-16 bg-linear-to-r from-red-500 to-orange-500"
-                    onClick={importDocument}>
+                <Button size="xl" onClick={importDocument}>
                     Import
-                </button>
+                </Button>
             </div>
             {pages.length !== 0 ? (
                 <>

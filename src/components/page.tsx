@@ -1,11 +1,10 @@
 import { PDFPage } from 'pdf-lib'
 import { PDFPageProxy } from 'pdfjs-dist'
 import React, { useEffect, useRef } from 'react'
-import SvgBin from './svg/bin'
-import { UniqueIdentifier, useDraggable, useDroppable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
 import { RenderTask } from 'pdfjs-dist/types/src/display/api'
 import { useSortable } from '@dnd-kit/sortable'
+import { Button } from '@/components/ui/button'
 
 export interface PageData {
     id: string
@@ -78,15 +77,13 @@ export default function Page({ pageData, position, deletePage, className }: Page
             {...listeners}
             {...attributes}>
             <div className={`a4 relative mx-auto mb-2 shadow-md`}>
-                <button
-                    onClick={deletePage}
-                    className="absolute right-4 top-4 p-3 rounded-md text-white font-semibold bg-linear-to-bl from-red-600 to-pink-500">
-                    <SvgBin className="h-5 w-auto stroke-white " />
-                </button>
-                <canvas ref={canvasRef} className="h-full w-full  border-2 rounded-lg" />
+                <Button onClick={deletePage} className="absolute right-4 top-4 p-3 text-black">
+                    X
+                </Button>
+                <canvas ref={canvasRef} className="h-full w-full  border-3" />
             </div>
 
-            <h3 className="text-gray-600">
+            <h3>
                 {pageData.docTitle} - page {pageData.number}
             </h3>
         </div>
